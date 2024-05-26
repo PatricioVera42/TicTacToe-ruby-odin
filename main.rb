@@ -1,6 +1,11 @@
 require './lib/game'
 require './lib/player'
 
-game = Game.new('pato', 'juan')
+puts "Select player1 name: "
+player1 = gets.to_s.chomp
+puts "Select player2 name: "
+player2 = gets.to_s.chomp
 
-puts game.print_board
+game = Game.new(player1,player2)
+
+game.play
