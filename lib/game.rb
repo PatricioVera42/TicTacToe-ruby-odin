@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require './lib/player'
 
+# Game class, contains all the functions to play the game
 class Game
-  WIN_POSITIONS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
+  WIN_POSITIONS = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]].freeze
 
   attr_accessor :board, :current_player
 
@@ -16,10 +19,10 @@ class Game
     @current_player = 1 - @current_player
   end
 
-  def has_won?(player)
-      WIN_POSITIONS.any? do |candidate|
-      candidate.all? {|position| @board[position] ==  player.mark}
-      end
+  def won?(player)
+    WIN_POSITIONS.any? do |candidate|
+      candidate.all? { |position| @board[position] == player.mark }
+    end
   end
 
   def board_full?
@@ -38,23 +41,24 @@ class Game
       print "Select your #{player.mark} position: "
       position = gets.to_i
       return position if @board[position].nil?
+
       puts "Position #{position} is not available. Try again."
-    end  
+    end
   end
 
   def print_board
-    printed_board = [[board[0],board[1],board[2]], [board[3],board[4],board[5]], [board[6],board[7],board[8]]]
-    for i in 0...printed_board.length
-      puts printed_board[i].join(" | ") + "\n"
-      print  "\n"
+    printed_board = [[board[0], board[1], board[2]], [board[3], board[4], board[5]], [board[6], board[7], board[8]]]
+    (0...printed_board.length).each do |i|
+      puts "#{printed_board[i].join(' | ')}\n"
+      print "\n"
     end
   end
 
   def play
     loop do
       place_player_marker(@players[current_player])
-      
-      if has_won?(@players[current_player])
+
+      if won?(@players[current_player])
         puts "#{@players[current_player]} wins!"
         print_board
         return
@@ -63,9 +67,8 @@ class Game
         print_board
         return
       end
-      
+
       switch_player
     end
   end
-    
 end
